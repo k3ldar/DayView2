@@ -28,7 +28,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("DayView2")]
-[assembly: AssemblyDescription("Day and week view calendar.")]
+[assembly: AssemblyDescription("Day and week view calendar")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Simon Carter")]
 [assembly: AssemblyProduct("DayView2")]
@@ -53,5 +53,5 @@ using System.Runtime.InteropServices;
 //
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("2.2.2.232")]
+[assembly: AssemblyVersion("2.2.4.234")]
 [assembly: System.CLSCompliant(true)]

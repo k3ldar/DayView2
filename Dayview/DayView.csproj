@@ -139,7 +139,7 @@
     <PreBuildEvent>T:\Tools\BuildUtil\UpdateVersion.exe /out="$(ProjectDir)Properties\ver.txt" /$(ConfigurationName) /path="$(ProjectDir)</PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>T:\Tools\BuildUtil\Build.Deploy.Util.exe /IgnoreDebug /$(ConfigurationName) /target="$(TargetPath)" /git="C:\Program Files\Git\bin\git.exe" /gitrepository="DayView2" /GitWorkingDir="T:\GitProjects\DayView" /NugetPack="T:\GitProjects\DayView\DayView\DayView.nuspec" /NugetVer=3 /NugetExe="t:\tools\nuget\nuget.exe" /netVersion=net4 /nugetKeyFile="T:\GitProjects\Private NUGET Key.txt" /nugetPush /NugetVer=3</PostBuildEvent>
+    <PostBuildEvent>T:\Tools\BuildUtil\Build.Deploy.Util.exe /IgnoreDebug /$(ConfigurationName) /target="$(TargetPath)" /git="C:\Program Files\Git\bin\git.exe" /gitrepository="DayView2" /GitTagName="DayView" /GitWorkingDir="T:\GitProjects\DayView" /NugetPack="T:\GitProjects\DayView\DayView\DayView.nuspec" /NugetVer=3 /NugetExe="t:\tools\nuget\nuget.exe1" /netVersion=net4 /nugetKeyFile="T:\GitProjects\Private NUGET Key.txt" /nugetPush /NugetVer=3</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
