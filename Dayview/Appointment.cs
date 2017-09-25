@@ -20,8 +20,6 @@
 //
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 
@@ -375,6 +373,8 @@ namespace Calendar
 
         #region Internal Members
 
+        #region Internal Methods
+
         /// <summary>
         /// Used internally to determine wether the appointment conflicts with another
         /// </summary>
@@ -385,6 +385,19 @@ namespace Calendar
         /// </summary>
         internal bool AppointmentMoved = false;
 
+        #endregion Internal Methods
+
         #endregion Internal Members
+
+        #region Overridden Methods
+
+#if DEBUG
+        public override string ToString()
+        {
+            return (String.Format("Appointment: {0}; conflict: {1}", Title, conflictCount));
+        }
+#endif
+
+        #endregion Overridden Methods
     }
 }

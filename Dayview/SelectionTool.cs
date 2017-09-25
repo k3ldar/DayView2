@@ -20,8 +20,6 @@
 //
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Drawing;
 
 namespace Calendar
@@ -203,20 +201,21 @@ namespace Calendar
                                     break;
 
                                 case SelectionMode.ResizeLeft:
-                                    if (!dayView.AllowAppointmentResize)
+                                    if (!selection.AllDayEvent || !dayView.AllowAppointmentResize)
                                         break;
 
-                                        if (m_Date.Date < selection.EndDate.Date)
+                                    if (m_Date.Date < selection.EndDate.Date)
                                     {
                                         dayView.SelectedAppointment.AppointmentMoved = true;
                                         selection.StartDate = m_Date.Date;
                                         dayView.Invalidate();
                                         dayView.RaiseAppointmentMove(new AppointmentEventArgs(selection));
                                     }
+
                                     break;
 
                                 case SelectionMode.ResizeRight:
-                                    if (!dayView.AllowAppointmentResize)
+                                    if (!selection.AllDayEvent || !dayView.AllowAppointmentResize)
                                         break;
 
                                     if (m_Date.Date >= selection.StartDate.Date)
@@ -226,6 +225,7 @@ namespace Calendar
                                         dayView.Invalidate();
                                         dayView.RaiseAppointmentMove(new AppointmentEventArgs(selection));
                                     }
+
                                     break;
                             }
 

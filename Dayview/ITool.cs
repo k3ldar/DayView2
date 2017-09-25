@@ -19,9 +19,6 @@
 // 09/06/2013 - initial release 
 //
 
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows.Forms;
 
 namespace Calendar

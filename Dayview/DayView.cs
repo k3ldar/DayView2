@@ -21,7 +21,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Windows.Forms;
 using System.Drawing;
 using System.ComponentModel;
@@ -90,12 +89,14 @@ namespace Calendar
         private bool _moveStart;
         private Timer _timerTooltip;
         private ToolTip _tooltip;
-        
+
         #endregion Timer / Tooltip variables
 
         #endregion Private Members
 
         #region Constants
+
+        private const int MAX_APPOINTMENTS_CONFLICTS = 10;
 
         private const int hourLabelWidth = 50;
         private const int hourLabelIndent = 2;
@@ -1064,7 +1065,7 @@ namespace Calendar
         {
             MouseEventArgs args = (MouseEventArgs)e;
 
-            if (args.Button == System.Windows.Forms.MouseButtons.Right)
+            if (args.Button == MouseButtons.Right)
             {
                 int col;
                 DateTime date;
@@ -1904,12 +1905,12 @@ namespace Calendar
             int startY;
             int endY;
 
-            startY = (start.Hour * halfHourHeight * slotsPerHour) + ((start.Minute * halfHourHeight) / /*30*/(60 / slotsPerHour));
-            endY = (end.Hour * halfHourHeight * slotsPerHour) + ((end.Minute * halfHourHeight) / /*30*/(60 / slotsPerHour));
+            startY = (start.Hour * halfHourHeight * slotsPerHour) + ((start.Minute * halfHourHeight) / (60 / slotsPerHour));
+            endY = (end.Hour * halfHourHeight * slotsPerHour) + ((end.Minute * halfHourHeight) / (60 / slotsPerHour));
 
             rect.Y = startY - scrollBarV.Value + this.HeaderHeight;
 
-            rect.Height = System.Math.Max(1, endY - startY);
+            rect.Height = System.Math.Max(1, (endY - startY) -1);
 
             return rect;
         }
@@ -1996,7 +1997,9 @@ namespace Calendar
             AppointmentList appointments = null;
 
             if (ViewType == DayViewType.SingleView)
+            {
                 appointments = (AppointmentList)cachedAppointments[time.Day];
+            }
             else
             {
                 appointments = (AppointmentList)cachedAppointments[Column];
@@ -2036,7 +2039,9 @@ namespace Calendar
             AppointmentList appointments = null;
 
             if (ViewType == DayViewType.SingleView)
+            {
                 appointments = (AppointmentList)cachedAppointments[time.Day];
+            }
             else
             {
                 appointments = (AppointmentList)cachedAppointments[Column];
@@ -2044,13 +2049,13 @@ namespace Calendar
 
             if (appointments != null)
             {
-                HalfHourLayout[] layout = GetMaxParalelAppointments(appointments, this.slotsPerHour);
+                AppointmentLayout[] layout = GetMaxParalelAppointments(appointments, this.slotsPerHour);
 
                 List<Appointment> drawnItems = new List<Appointment>();
 
-                for (int halfHour = 0; halfHour < 24 * slotsPerHour; halfHour++)
+                for (int timeBlock = 0; timeBlock < 24 * slotsPerHour; timeBlock++)
                 {
-                    HalfHourLayout hourLayout = layout[halfHour];
+                    AppointmentLayout hourLayout = layout[timeBlock];
 
                     if ((hourLayout != null) && (hourLayout.Count > 0))
                     {
@@ -2068,27 +2073,33 @@ namespace Calendar
                                 AppointmentView view;
 
                                 appointmentWidth = rect.Width / appointment.conflictCount;
-                                
-                                int lastX = 0;
 
-                                foreach (Appointment app in hourLayout.Appointments)
+                                appRect.Width = appointmentWidth;
+                                appRect = GetHourRangeRectangle(appointment.StartDate, appointment.EndDate, appRect);
+
+                                // multiple passes looking for overlaps, depending on conflict count
+                                for (int i = 0; i < appointment.conflictCount; i++)
                                 {
-                                    if ((app != null) && (app.Group == appointment.Group) && (appointmentViews.ContainsKey(app)))
+                                    foreach (Appointment app in drawnItems)
                                     {
-                                        view = appointmentViews[app];
+                                        // appts stored sequentially, if null no more to process
+                                        if (app == null)
+                                            break;
 
-                                        if (lastX < view.Rectangle.X)
-                                            lastX = view.Rectangle.X;
+                                        if ((app.Group == appointment.Group) && (appointmentViews.ContainsKey(app)))
+                                        {
+                                            view = appointmentViews[app];
+
+                                            if (view.Rectangle.IntersectsWith(appRect))
+                                            //if (view.Rectangle.Contains(new Point(nextX, appRect.Y)))
+                                            {
+                                                appRect.X += appointmentWidth;
+                                            }
+                                        }
                                     }
                                 }
 
-                                if ((lastX + (appointmentWidth * 2)) > (rect.X + rect.Width))
-                                    lastX = 0;
-
                                 appRect.Width = appointmentWidth - 5;
-
-                                if (lastX > 0)
-                                    appRect.X = lastX + appointmentWidth;
 
                                 DateTime appstart = appointment.StartDate;
                                 DateTime append = appointment.EndDate;
@@ -2176,9 +2187,10 @@ namespace Calendar
             }
         }
 
-        private static HalfHourLayout[] GetMaxParalelAppointments(List<Appointment> appointments, int slotsPerHour)
+        private static AppointmentLayout[] GetMaxParalelAppointments(List<Appointment> appointments, int slotsPerHour)
         {
-            HalfHourLayout[] appLayouts = new HalfHourLayout[24 * 20];
+            int maxAppointments = appointments.Count > MAX_APPOINTMENTS_CONFLICTS ? MAX_APPOINTMENTS_CONFLICTS : appointments.Count;
+            AppointmentLayout[] Result = new AppointmentLayout[24 * (60 / slotsPerHour)];
 
             foreach (Appointment appointment in appointments)
             {
@@ -2187,28 +2199,31 @@ namespace Calendar
 
             foreach (Appointment appointment in appointments)
             {
-                int firstHalfHour = appointment.StartDate.Hour * slotsPerHour + (appointment.StartDate.Minute / /*30*/(60 / slotsPerHour));
-                int lastHalfHour = appointment.EndDate.Hour * slotsPerHour + (appointment.EndDate.Minute / /*30*/(60 / slotsPerHour));
+                int startBlock = appointment.StartDate.Hour * slotsPerHour + (appointment.StartDate.Minute / (60 / slotsPerHour));
+                int endBlock = appointment.EndDate.Hour * slotsPerHour + (appointment.EndDate.Minute / (60 / slotsPerHour));
 
                 // Added to allow small parts been displayed
-                if (lastHalfHour == firstHalfHour)
+                if (endBlock == startBlock)
                 {
-                    if (lastHalfHour < 24 * slotsPerHour)
-                        lastHalfHour++;
+                    if (endBlock < 24 * slotsPerHour)
+                        endBlock++;
                     else
-                        firstHalfHour--;
+                        startBlock--;
                 }
 
-                for (int halfHour = firstHalfHour; halfHour < lastHalfHour; halfHour++)
+                for (int timeSlot = startBlock; timeSlot < endBlock; timeSlot++)
                 {
-                    HalfHourLayout layout = appLayouts[halfHour];
+                    AppointmentLayout layout = Result[timeSlot];
 
                     if (layout == null)
                     {
-                        layout = new HalfHourLayout();
-                        layout.Appointments = new Appointment[appointments.Count];
-                        appLayouts[halfHour] = layout;
+                        layout = new AppointmentLayout();
+                        layout.Appointments = new Appointment[maxAppointments];
+                        Result[timeSlot] = layout;
                     }
+
+                    if (layout.Count >= maxAppointments)
+                        break;
 
                     layout.Appointments[layout.Count] = appointment;
 
@@ -2234,7 +2249,31 @@ namespace Calendar
                 }
             }
 
-            return appLayouts;
+            // first pass get the maximum conflicts for an appointment
+            foreach (Appointment appt in appointments)
+            {
+                if (appt == null)
+                    continue;
+
+                int maxConflicts = appt.conflictCount;
+
+                foreach (AppointmentLayout lo in Result)
+                {
+                    if (lo == null)
+                        continue;
+
+                    if (lo.Contains(appt))
+                    {
+                        foreach (Appointment ap in lo.Appointments)
+                        {
+                            if (ap != null && ap != appt && ap.conflictCount < maxConflicts)
+                                ap.conflictCount = maxConflicts;
+                        }
+                    }
+                }
+            }
+
+            return (Result);
         }
 
         private void DrawDays(PaintEventArgs e, Rectangle rect)
@@ -2387,11 +2426,29 @@ namespace Calendar
 
         #region Internal Utility Classes
 
-        class HalfHourLayout
+        internal class AppointmentLayout
         {
-            public int Count;
+            public int Count { get; set; }
             public List<string> Groups;
             public Appointment[] Appointments;
+
+            public bool Contains(Appointment appointment)
+            {
+                foreach (Appointment appt in Appointments)
+                {
+                    if (appt == appointment)
+                        return (true);
+                }
+
+                return (false);
+            }
+
+#if DEBUG
+            public override string ToString()
+            {
+                return (String.Format("AppointmentLayout, Count = {0}", Count));
+            }
+#endif
         }
 
         internal class AppointmentView

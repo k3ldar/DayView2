@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace DayView2Demo
@@ -15,6 +11,9 @@ namespace DayView2Demo
         #region Private Members
 
         List<Calendar.Appointment> _appointments;
+        private int[] _overlappedAppointments = new int[] { 600, 600, 660, 720, 720, 720,
+            810, 810, 840, 840, 870, 960, 960, 960 };
+        private int[] _overlapDurations = new int[] { 120, 120, 120, 105, 60, 60, 45, 45, 135, 135, 120, 120, 120, 120 };
 
         private int _daysToView = 5;
 
@@ -94,6 +93,21 @@ namespace DayView2Demo
                         _appointments.Add(appt);
                     }
                 }
+            }
+
+            // overlapped appointments
+            string firstPerson = (string)lstPeople.Items[0];
+
+            for (int i = 0; i < _overlappedAppointments.Length; i++)
+            {
+                Calendar.Appointment appt = new Calendar.Appointment();
+                appt.Object = firstPerson;
+                appt.Color = Color.BlanchedAlmond; // dont ask me why I chose this color?
+                DateTime date = DateTime.Now.Date.AddMinutes(_overlappedAppointments[i]);
+                appt.StartDate = date;
+                appt.EndDate = date.AddMinutes(_overlapDurations[i]);
+                appt.Title = String.Format("Overlap {0}", i);
+                _appointments.Add(appt);
             }
         }
 
