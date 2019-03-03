@@ -1,155 +1,143 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.50727</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{D17A4D6A-4CAA-4470-8A19-F42463C021FD}</ProjectGuid>
+    <TargetFrameworks>net461;net472;net45;net40</TargetFrameworks>
+    <ApplicationIcon />
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Calendar</RootNamespace>
+    <StartupObject />
     <AssemblyName>Calendar.DayView</AssemblyName>
-    <SccProjectName>
-    </SccProjectName>
-    <SccLocalPath>
-    </SccLocalPath>
-    <SccAuxPath>
-    </SccAuxPath>
-    <SccProvider>
-    </SccProvider>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <OldToolsVersion>3.5</OldToolsVersion>
-    <UpgradeBackupLocation>
-    </UpgradeBackupLocation>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>..\Builds\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-    <CodeAnalysisRuleSet>DayView.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>none</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>..\Builds\Release\</OutputPath>
-    <DefineConstants>
-    </DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-    <CodeAnalysisRuleSet>DayView.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup>
+    <RootNamespace>Calendar</RootNamespace>
+    <LangVersion>latest</LangVersion>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
+    <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
+    <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
     <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>Dayview2.pfx</AssemblyOriginatorKeyFile>
+    <Copyright>Copyright © 2010 - 2019.  Simon Carter All rights reserved.</Copyright>
+    <PackageId>DayView</PackageId>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>2.9.0</Version>
+    <Authors>Simon Carter</Authors>
+    <PackageProjectUrl>https://github.com/k3ldar/SharedLib</PackageProjectUrl>
+    <PackageTags>Day and week view calendar</PackageTags>
+    <PackageLicenseUrl>https://github.com/k3ldar/SharedLib/blob/master/LICENSE</PackageLicenseUrl>
+    <DelaySign>false</DelaySign>
   </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>DayView.pfx</AssemblyOriginatorKeyFile>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU' AND '$(TargetFramework)' == 'net461'">
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <DebugType>portable</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <DefineConstants>TRACE;DEBUG;NET_461;NET_FW</DefineConstants>
+    <OutputPath>..\Builds\Shared\Debug\Net461</OutputPath>
   </PropertyGroup>
-  <ItemGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU' AND '$(TargetFramework)' == 'net461'">
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+    <DefineConstants>RELEASE;NET_461;NET_FW</DefineConstants>
+    <OutputPath>..\Builds\Shared\Release\Net461</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU' AND '$(TargetFramework)' == 'net47'">
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <DebugType>portable</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <DefineConstants>TRACE;DEBUG;NET_47;NET_FW</DefineConstants>
+    <OutputPath>..\Builds\Shared\Debug\Net47</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU' AND '$(TargetFramework)' == 'net47'">
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+    <DefineConstants>RELEASE;NET_47;NET_FW</DefineConstants>
+    <OutputPath>..\Builds\Shared\Release\Net47</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU' AND '$(TargetFramework)' == 'net472'">
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <DebugType>portable</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <DefineConstants>TRACE;DEBUG;NET_472;NET_FW</DefineConstants>
+    <OutputPath>..\Builds\Shared\Debug\Net472</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU' AND '$(TargetFramework)' == 'net472'">
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+    <DefineConstants>RELEASE;NET_472;NET_FW</DefineConstants>
+    <OutputPath>..\Builds\Shared\Release\Net472</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU' AND '$(TargetFramework)' == 'net45'">
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <DebugType>portable</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <DefineConstants>TRACE;DEBUG;NET_45;NET_FW</DefineConstants>
+    <OutputPath>..\Builds\Shared\Debug\Net45</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU' AND '$(TargetFramework)' == 'net45'">
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+    <DefineConstants>RELEASE;NET_45;NET_FW</DefineConstants>
+    <OutputPath>..\Builds\Shared\Release\Net45</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU' AND '$(TargetFramework)' == 'net40'">
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <DebugType>portable</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <DefineConstants>TRACE;DEBUG;NET_40;NET_FW</DefineConstants>
+    <OutputPath>..\Builds\Shared\Debug\Net40</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU' AND '$(TargetFramework)' == 'net40'">
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+    <DefineConstants>RELEASE;NET_40;NET_FW</DefineConstants>
+    <OutputPath>..\Builds\Shared\Release\Net40</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU' AND '$(TargetFramework)' == 'netcoreapp3.0'">
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <DebugType>portable</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <DefineConstants>TRACE;DEBUG;NETCOREAPP3;NET_CORE</DefineConstants>
+    <OutputPath>..\Builds\Shared\Debug\NetCore3.0</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU' AND '$(TargetFramework)' == 'netcoreapp3.0'">
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <DebugType>portable</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <DefineConstants>RELEASE;NETCOREAPP3;NET_CORE</DefineConstants>
+    <OutputPath>..\Builds\Shared\Release\NetCore3.0</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net461' OR '$(TargetFramework)' == 'net472' OR '$(TargetFramework)' == 'net45' OR '$(TargetFramework)' == 'net40'">
     <Reference Include="System" />
-    <Reference Include="System.Data" />
+    <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="AbstractRenderer.cs" />
-    <Compile Include="Appointment.cs" />
-    <Compile Include="Appointments.cs" />
-    <Compile Include="Checks.cs" />
-    <Compile Include="DataBoundAppointment.cs" />
-    <Compile Include="DayView.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="DrawTool.cs" />
-    <Compile Include="EventArgs\AfterDrawAppointmentEventArgs.cs" />
-    <Compile Include="EventArgs\AppointmentEventArgs.cs" />
-    <Compile Include="EventArgs\AppointmentMoveEventArgs.cs" />
-    <Compile Include="EventArgs\AppointmentSelectedEventArgs.cs" />
-    <Compile Include="EventArgs\ContextMenuEvent.cs" />
-    <Compile Include="EventArgs\HeaderClickEventArgs.cs" />
-    <Compile Include="EventArgs\TeamViewEvents.cs" />
-    <Compile Include="EventArgs\NewAppointmentEvent.cs" />
-    <Compile Include="EventArgs\OwnerDrawEvents.cs" />
-    <Compile Include="EventArgs\ResolveAppointmentsEvent.cs" />
-    <Compile Include="EventArgs\TooltipEvents.cs" />
-    <Compile Include="EventArgs\WorkingHoursEvents.cs" />
-    <Compile Include="GraphicsExtension.cs" />
-    <Compile Include="ITool.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Renderers\BlueRenderer.cs" />
-    <Compile Include="Renderers\GreyRenderer.cs" />
-    <Compile Include="Renderers\Office11Renderer.cs" />
-    <Compile Include="Renderers\Office12Renderer.cs" />
-    <Compile Include="Renderers\PinkRenderer.cs" />
-    <Compile Include="Renderers\RoundedRederer.cs" />
-    <Compile Include="Selection.cs" />
-    <Compile Include="SelectionTool.cs" />
-    <Compile Include="Web\WebDayView.cs" />
-    <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
-  </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include=".NETFramework,Version=v4.0">
-      <Visible>False</Visible>
-      <ProductName>Microsoft .NET Framework 4 %28x86 and x64%29</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
-      <Visible>False</Visible>
-      <ProductName>Windows Installer 3.1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="DayView.pfx" />
-    <None Include="DayView.ruleset" />
-  </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PreBuildEvent>T:\Tools\BuildUtil\UpdateVersion.exe /out="$(ProjectDir)Properties\ver.txt" /$(ConfigurationName) /path="$(ProjectDir)</PreBuildEvent>
-  </PropertyGroup>
-  <PropertyGroup>
-    <PostBuildEvent>T:\Tools\BuildUtil\Build.Deploy.Util.exe /IgnoreDebug /$(ConfigurationName) /target="$(TargetPath)" /git="C:\Program Files\Git\bin\git.exe" /gitrepository="DayView2" /GitTagName="DayView" /GitWorkingDir="T:\GitProjects\DayView" /NugetPack="T:\GitProjects\DayView\DayView\DayView.nuspec" /NugetVer=3 /NugetExe="t:\tools\nuget\nuget.exe" /netVersion=net4 /nugetKeyFile="T:\GitProjects\Private NUGET Key.txt" /nugetPush /NugetVer=3</PostBuildEvent>
-  </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>
