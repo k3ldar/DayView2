@@ -10,10 +10,10 @@ namespace DayView2Demo
     {
         #region Private Members
 
-        List<Calendar.Appointment> _appointments;
-        private int[] _overlappedAppointments = new int[] { 600, 600, 660, 720, 720, 720,
+        private readonly List<Calendar.Appointment> _appointments;
+        private readonly int[] _overlappedAppointments = new int[] { 600, 600, 660, 720, 720, 720,
             810, 810, 840, 840, 870, 960, 960, 960 };
-        private int[] _overlapDurations = new int[] { 120, 120, 120, 105, 60, 60, 45, 45, 135, 135, 120, 120, 120, 120 };
+        private readonly int[] _overlapDurations = new int[] { 120, 120, 120, 105, 60, 60, 45, 45, 135, 135, 120, 120, 120, 120 };
 
         private int _daysToView = 5;
 
@@ -376,9 +376,7 @@ namespace DayView2Demo
             appt.ID = _appointments.Count;
             appt.Title = "New Appointment";
 
-            DateTime date;
-            int column;
-            dayView1.GetColumnFromMousePosition(out column, out date);
+            dayView1.GetColumnFromMousePosition(out int column, out DateTime date);
 
             appt.StartDate = dayView1.SelectionStart;
             appt.EndDate = dayView1.SelectionEnd;
@@ -414,6 +412,5 @@ namespace DayView2Demo
         {
             dayView1.AllowAppointmentResize = cbAllowAppointmentResize.Checked;
         }
-
     }
 }

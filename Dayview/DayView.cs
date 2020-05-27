@@ -32,10 +32,10 @@ namespace Calendar
     {
         #region Private Members
 
-        private TextBox editbox;
-        private VScrollBar scrollBarV;
-        private DrawTool drawTool;
-        private SelectionTool selectionTool;
+        private readonly TextBox editbox;
+        private readonly VScrollBar scrollBarV;
+        private readonly DrawTool drawTool;
+        private readonly SelectionTool selectionTool;
         private int allDayEventsHeaderHeight = 20;
         
         private DateTime workStart;
@@ -87,8 +87,8 @@ namespace Calendar
         
         private Point _oldPoint;
         private bool _moveStart;
-        private Timer _timerTooltip;
-        private ToolTip _tooltip;
+        private readonly Timer _timerTooltip;
+        private readonly ToolTip _tooltip;
 
         #endregion Timer / Tooltip variables
 
@@ -163,10 +163,10 @@ namespace Calendar
             scrollBarV.Dock = DockStyle.Right;
             scrollBarV.Visible = allowScroll;
             scrollBarV.Scroll += new ScrollEventHandler(scrollbar_Scroll);
-            this.Controls.Add(scrollBarV);
+            Controls.Add(scrollBarV);
 
             AdjustScrollbar();
-            scrollBarV.Value = (startHour * slotsPerHour * halfHourHeight);
+            scrollBarV.Value = startHour * slotsPerHour * halfHourHeight;
 
             editbox = new TextBox();
             editbox.Multiline = true;
@@ -176,7 +176,7 @@ namespace Calendar
             editbox.KeyUp += new KeyEventHandler(editbox_KeyUp);
             editbox.Margin = Padding.Empty;
 
-            this.Controls.Add(editbox);
+            Controls.Add(editbox);
 
             drawTool = new DrawTool();
             drawTool.DayView = this;
@@ -189,7 +189,7 @@ namespace Calendar
 
             UpdateWorkingHours();
 
-            this.Renderer = new Office12Renderer(this);
+            Renderer = new Office12Renderer(this);
         }
 
         #endregion Constructors / Destructors
@@ -203,7 +203,7 @@ namespace Calendar
         [DefaultValue(DayViewType.SingleView)]
         public DayViewType ViewType
         {
-            get { return (_dayViewType); }
+            get { return _dayViewType; }
             set
             {
                 if (_dayViewType != value)
@@ -240,7 +240,7 @@ namespace Calendar
         {
             get
             {
-                return (highlightCurrentTime);
+                return highlightCurrentTime;
             }
 
             set
@@ -286,6 +286,14 @@ namespace Calendar
             }
             set
             {
+                if (value > 60)
+                {
+                    value = 60;
+                }
+                else if (value < 1)
+                {
+                    value = 1;
+                }
                 slotsPerHour = value;
 
                 if (value > ScrollRows)
@@ -302,13 +310,13 @@ namespace Calendar
         {
             get
             {
-                return (showMinutes);
+                return showMinutes;
             }
 
             set
             {
                 showMinutes = value;
-                this.Invalidate();
+                Invalidate();
             }
         }
 
@@ -324,7 +332,7 @@ namespace Calendar
             set
             {
                 ampmdisplay = value;
-                this.Invalidate();
+                Invalidate();
             }
         }
 
@@ -367,7 +375,7 @@ namespace Calendar
         {
             get
             {
-                return (selectedColumn);
+                return selectedColumn;
             }
 
             set
@@ -601,7 +609,7 @@ namespace Calendar
         {
             get
             {
-                return (_scrollRows);
+                return _scrollRows;
             }
 
             set
@@ -624,7 +632,7 @@ namespace Calendar
         [Description("ContextMenuStrip for Header section")]
         public ContextMenuStrip ContextMenuHeader
         {
-            get { return (_ContextMenuHeader); }
+            get { return _ContextMenuHeader; }
             set { _ContextMenuHeader = value; }
         }
 
@@ -632,7 +640,7 @@ namespace Calendar
         [Description("ContextMenuStrip for All Day section")]
         public ContextMenuStrip ContextMenuAllDay
         {
-            get { return (_ContextMenuAllDay); }
+            get { return _ContextMenuAllDay; }
             set { _ContextMenuAllDay = value; }
         }
 
@@ -640,7 +648,7 @@ namespace Calendar
         [Description("ContextMenuStrip for main diary section")]
         public ContextMenuStrip ContextMenuDiary
         {
-            get { return (_ContextMenuDiary); }
+            get { return _ContextMenuDiary; }
             set { _ContextMenuDiary = value; }
         }
 
@@ -672,7 +680,7 @@ namespace Calendar
         {
             get
             {
-                return (_rightMouseSelect);
+                return _rightMouseSelect;
             }
 
             set
@@ -702,7 +710,7 @@ namespace Calendar
         {
             get
             {
-                return (_alwaysShowAppointmentText);
+                return _alwaysShowAppointmentText;
             }
 
             set
@@ -719,12 +727,12 @@ namespace Calendar
         {
             get
             {
-                return (drawAllAppBorder);
+                return drawAllAppBorder;
             }
             set
             {
                 drawAllAppBorder = value;
-                this.Invalidate();
+                Invalidate();
             }
         }
 
@@ -735,12 +743,12 @@ namespace Calendar
         {
             get
             {
-                return (_allowAppointmentResize);
+                return _allowAppointmentResize;
             }
             set
             {
                 _allowAppointmentResize = value;
-                this.Invalidate();
+                Invalidate();
             }
         }
 
@@ -755,7 +763,7 @@ namespace Calendar
         {
             get
             {
-                return (_timerTooltip.Interval);
+                return _timerTooltip.Interval;
             }
 
             set
@@ -802,9 +810,9 @@ namespace Calendar
         private int MinValue(int minimum, int value)
         {
             if (minimum > 0 && value < minimum)
-                return (minimum);
+                return minimum;
             else
-                return (value);
+                return value;
         }
 
         private void OnHalfHourHeightChanged()
@@ -815,13 +823,13 @@ namespace Calendar
 
         private void OnRendererChanged()
         {
-            this.Font = renderer.BaseFont;
-            this.Invalidate();
+            Font = renderer.BaseFont;
+            Invalidate();
         }
 
         protected virtual void OnDaysToShowChanged()
         {
-            if (this.CurrentlyEditing)
+            if (CurrentlyEditing)
                 FinishEditing(true);
 
             Invalidate();
@@ -847,7 +855,7 @@ namespace Calendar
             }
             else
             {
-                scrollBarV.Value = (startHour * slotsPerHour * halfHourHeight);
+                scrollBarV.Value = startHour * slotsPerHour * halfHourHeight;
             }
 
             Invalidate();
@@ -868,17 +876,17 @@ namespace Calendar
         private Rectangle GetVisibleRectangle()
         {
             // Calculate visible rectangle
-            Rectangle Result = new Rectangle(0, 0, this.Width - scrollBarV.Width, this.Height);
+            Rectangle Result = new Rectangle(0, 0, Width - scrollBarV.Width, Height);
 
             Result.X += hourLabelWidth + hourLabelIndent;
-            Result.Y += this.HeaderHeight;
-            Result.Width -= (hourLabelWidth + hourLabelIndent);
+            Result.Y += HeaderHeight;
+            Result.Width -= hourLabelWidth + hourLabelIndent;
 
-            return (Result);
+            return Result;
         }
         private void OnAllowScrollChanged()
         {
-            this.scrollBarV.Visible = this.AllowScroll;
+            scrollBarV.Visible = AllowScroll;
         }
 
         #endregion Event Update Methods
@@ -934,7 +942,7 @@ namespace Calendar
 
         private void AdjustScrollbar()
         {
-            scrollBarV.Maximum = (slotsPerHour * halfHourHeight * 24) - (this.Height - this.HeaderHeight); // 24 is hours in a day (not the 25 originally put there
+            scrollBarV.Maximum = (slotsPerHour * halfHourHeight * 24) - (Height - HeaderHeight); // 24 is hours in a day (not the 25 originally put there
             scrollBarV.Minimum = 0;
         }
 
@@ -952,7 +960,7 @@ namespace Calendar
         protected override void OnMouseDown(MouseEventArgs e)
         {
             // Capture focus
-            this.Focus();
+            Focus();
 
             if (CurrentlyEditing)
             {
@@ -1067,10 +1075,8 @@ namespace Calendar
 
             if (args.Button == MouseButtons.Right)
             {
-                int col;
-                DateTime date;
 
-                MouseLocation location = MouseOver(out col, out date);
+                MouseLocation location = MouseOver(out int col, out DateTime date);
 
                 if (location == MouseLocation.Header)
                 {
@@ -1135,25 +1141,24 @@ namespace Calendar
             }
         }
 
-        System.Collections.Hashtable cachedAppointments = new System.Collections.Hashtable();
+        readonly System.Collections.Hashtable cachedAppointments = new System.Collections.Hashtable();
 
         protected virtual void OnResolveAppointments(ResolveAppointmentsEventArgs args)
         {
 #if DEBUG
             System.Diagnostics.Debug.WriteLine("Resolve app");
 #endif
-            if (ResolveAppointments != null)
-                ResolveAppointments(this, args);
+            ResolveAppointments?.Invoke(this, args);
 
 
-            this.allDayEventsHeaderHeight = 0;
+            allDayEventsHeaderHeight = 0;
 
             // cache resolved appointments in hashtable by days.
             cachedAppointments.Clear();
             appointmentViews.Clear();
             longappointmentViews.Clear();
 
-            if ((selectedAppointmentIsNew) && (SelectedAppointment != null))
+            if (selectedAppointmentIsNew && (SelectedAppointment != null))
             {
                 if ((SelectedAppointment.StartDate > args.StartDate) && (SelectedAppointment.StartDate < args.EndDate))
                 {
@@ -1199,20 +1204,17 @@ namespace Calendar
 
         internal void RaiseBeforeShowContextMenu(ContextMenuEventArgs e)
         {
-            if (BeforeContextMenuShow != null)
-                BeforeContextMenuShow(this, e);
+            BeforeContextMenuShow?.Invoke(this, e);
         }
 
         internal void RaiseAppointmentSelected(Appointment appointment)
         {
-            if (AppointmentSelected != null)
-                AppointmentSelected(this, new AppointmentSelectedEventArgs(appointment, true));
+            AppointmentSelected?.Invoke(this, new AppointmentSelectedEventArgs(appointment, true));
         }
 
         internal void RaiseAppointmentDeSelected(Appointment appointment)
         {
-            if (AppointmentSelected != null)
-                AppointmentSelected(this, new AppointmentSelectedEventArgs(appointment, false));
+            AppointmentSelected?.Invoke(this, new AppointmentSelectedEventArgs(appointment, false));
         }
 
         /// <summary>
@@ -1221,8 +1223,7 @@ namespace Calendar
         /// <param name="e">class</param>
         internal void RaiseMultiCountHeader(TeamViewGetEventArgs e)
         {
-            if (MultiHeader != null)
-                MultiHeader(this, e);
+            MultiHeader?.Invoke(this, e);
         }
 
         /// <summary>
@@ -1231,69 +1232,59 @@ namespace Calendar
         /// <param name="e"></param>
         internal void RaiseMultiCount(TeamViewCountEventArgs e)
         {
-            if (MultiCount != null)
-                MultiCount(this, e);
+            MultiCount?.Invoke(this, e);
         }
 
         internal void RaiseWorkingHours(WorkingHoursEventArgs e)
         {
-            if (WorkingHours != null)
-                WorkingHours(this, e);
+            WorkingHours?.Invoke(this, e);
         }
 
         internal void RaiseTooltip(TooltipEventArgs e)
         {
-            if (ToolTipShow != null)
-                ToolTipShow(this, e);
+            ToolTipShow?.Invoke(this, e);
         }
 
         internal void RaiseDoubleClickHeader(HeaderClickEventArgs e)
         {
-            if (HeaderClicked != null)
-                HeaderClicked(this, e);
+            HeaderClicked?.Invoke(this, e);
         }
 
         internal void RaiseSelectionChanged(EventArgs e)
         {
-            if (SelectionChanged != null)
-                SelectionChanged(this, e);
+            SelectionChanged?.Invoke(this, e);
         }
 
         internal void RaiseBeforeAppointmentMoved(AppointmentMoveEventArgs e)
         {
-            if (BeforeAppointmentMove != null)
-                BeforeAppointmentMove(this, e);
+            BeforeAppointmentMove?.Invoke(this, e);
         }
 
         internal void RaiseAppointmentMove(AppointmentEventArgs e)
         {
-            if (AppointmentMove != null)
-                AppointmentMove(this, e);
+            AppointmentMove?.Invoke(this, e);
         }
 
         internal void RaiseAppointmentMoved(AppointmentEventArgs e)
         {
-            if (AppointmentMoved != null)
-                AppointmentMoved(this, e);
+            AppointmentMoved?.Invoke(this, e);
         }
 
         internal void RaiseAfterDrawHeader(AfterDrawHeaderEventArgs e)
         {
-            if (AfterDrawHeader != null)
-                AfterDrawHeader(this, e);
+            AfterDrawHeader?.Invoke(this, e);
         }
 
         internal void RaiseAfterDrawAppointment(AfterDrawAppointmentEventArgs e)
         {
-            if (AfterDrawAppointment != null)
-                AfterDrawAppointment(this, e);
+            AfterDrawAppointment?.Invoke(this, e);
         }
 
         protected override void OnKeyPress(KeyPressEventArgs e)
         {
-            if ((allowNew) && char.IsLetterOrDigit(e.KeyChar))
+            if (allowNew && char.IsLetterOrDigit(e.KeyChar))
             {
-                if ((this.Selection == SelectionType.DateRange))
+                if (Selection == SelectionType.DateRange)
                 {
                     if (!selectedAppointmentIsNew)
                         EnterNewAppointmentMode(e.KeyChar);
@@ -1313,7 +1304,7 @@ namespace Calendar
             Rectangle appRect = new Rectangle();
             appRect = GetHourRangeRectangle(selectionStart, selectionEnd, appRect);
             appRect.Width = (Width - (hourLabelWidth + hourLabelIndent + scrollBarV.Width)) / columnCount;
-            appRect.X = (hourLabelWidth + hourLabelIndent) + (appRect.Width * selectedColumn);
+            appRect.X = hourLabelWidth + hourLabelIndent + (appRect.Width * selectedColumn);
 
             //Add appointment to appointmentViews dictionary
             AppointmentView view = new AppointmentView();
@@ -1336,14 +1327,14 @@ namespace Calendar
             if (!allowInplaceEditing)
                 return;
 
-            if (this.InvokeRequired)
+            if (InvokeRequired)
             {
                 Appointment selectedApp = SelectedAppointment;
 
                 //System.Threading.Thread.Sleep(200);
 
                 if (selectedApp == SelectedAppointment)
-                    this.Invoke(new StartEditModeDelegate(EnterEditMode), state);
+                    Invoke(new StartEditModeDelegate(EnterEditMode), state);
             }
             else
             {
@@ -1355,10 +1346,7 @@ namespace Calendar
         {
             NewAppointmentEventArgs args = new NewAppointmentEventArgs(SelectedAppointment.Title, SelectedAppointment.StartDate, SelectedAppointment.EndDate, SelectedAppointment.Column);
 
-            if (NewAppointment != null)
-            {
-                NewAppointment(this, args);
-            }
+            NewAppointment?.Invoke(this, args);
 
             SelectedAppointment = null;
             selectedAppointmentIsNew = false;
@@ -1370,10 +1358,7 @@ namespace Calendar
         {
             AppointmentEventArgs args = new AppointmentEventArgs(SelectedAppointment);
 
-            if (AppointmentUpdated != null)
-            {
-                AppointmentUpdated(this, args);
-            }
+            AppointmentUpdated?.Invoke(this, args);
 
             SelectedAppointment = null;
             selectedAppointmentIsNew = false;
@@ -1409,7 +1394,7 @@ namespace Calendar
             if (!Result)
                 Result = checkDateFinish <= finishDate && checkDateFinish >= dateStart;
 
-            return (Result);
+            return Result;
         }
 
 
@@ -1432,13 +1417,13 @@ namespace Calendar
 
             Rectangle hourLabelRectangle = rectangle;
 
-            hourLabelRectangle.Y += this.HeaderHeight;
+            hourLabelRectangle.Y += HeaderHeight;
 
             DrawHourLabels(e, hourLabelRectangle);
 
             Rectangle daysRectangle = rectangle;
             daysRectangle.X += hourLabelWidth;
-            daysRectangle.Y += this.HeaderHeight;
+            daysRectangle.Y += HeaderHeight;
             daysRectangle.Width -= hourLabelWidth;
 
             if (e.ClipRectangle.IntersectsWith(daysRectangle))
@@ -1462,30 +1447,30 @@ namespace Calendar
         /// <param name="down"></param>
         public void ScrollMe(bool down)
         {
-            if (this.AllowScroll)
+            if (AllowScroll)
             {
                 int newScrollValue;
 
                 if (down)
                 {//mouse wheel scroll down
-                    newScrollValue = this.scrollBarV.Value + this.scrollBarV.SmallChange;
+                    newScrollValue = scrollBarV.Value + scrollBarV.SmallChange;
 
-                    if (newScrollValue < this.scrollBarV.Maximum)
-                        this.scrollBarV.Value = newScrollValue;
+                    if (newScrollValue < scrollBarV.Maximum)
+                        scrollBarV.Value = newScrollValue;
                     else
-                        this.scrollBarV.Value = this.scrollBarV.Maximum;
+                        scrollBarV.Value = scrollBarV.Maximum;
                 }
                 else
                 {//mouse wheel scroll up
-                    newScrollValue = this.scrollBarV.Value - this.scrollBarV.SmallChange;
+                    newScrollValue = scrollBarV.Value - scrollBarV.SmallChange;
 
-                    if (newScrollValue > this.scrollBarV.Minimum)
-                        this.scrollBarV.Value = newScrollValue;
+                    if (newScrollValue > scrollBarV.Minimum)
+                        scrollBarV.Value = newScrollValue;
                     else
-                        this.scrollBarV.Value = this.scrollBarV.Minimum;
+                        scrollBarV.Value = scrollBarV.Minimum;
                 }
 
-                this.Invalidate();
+                Invalidate();
             }
         }
 
@@ -1493,22 +1478,22 @@ namespace Calendar
         {
             Rectangle truerect;
 
-            truerect = this.ClientRectangle;
+            truerect = ClientRectangle;
             truerect.X += hourLabelWidth + hourLabelIndent;
             truerect.Width -= scrollBarV.Width + hourLabelWidth + hourLabelIndent;
-            truerect.Y += this.HeaderHeight;
-            truerect.Height -= this.HeaderHeight;
+            truerect.Y += HeaderHeight;
+            truerect.Height -= HeaderHeight;
 
-            return (truerect);
+            return truerect;
         }
 
         public Rectangle GetFullDayApptsRectangle()
         {
             Rectangle fulldayrect;
-            fulldayrect = this.ClientRectangle;
-            fulldayrect.Height = this.HeaderHeight - dayHeadersHeight;
+            fulldayrect = ClientRectangle;
+            fulldayrect.Height = HeaderHeight - dayHeadersHeight;
             fulldayrect.Y += dayHeadersHeight;
-            fulldayrect.Width -= (hourLabelWidth + hourLabelIndent + scrollBarV.Width);
+            fulldayrect.Width -= hourLabelWidth + hourLabelIndent + scrollBarV.Width;
             fulldayrect.X += hourLabelWidth + hourLabelIndent;
 
             return fulldayrect;
@@ -1560,7 +1545,7 @@ namespace Calendar
             }
 
             Invalidate();
-            this.Focus();
+            Focus();
         }
 
         /// <summary>
@@ -1570,7 +1555,7 @@ namespace Calendar
         /// <returns>DateTime object with date/time of cell</returns>
         public DateTime GetTimeAt(ref int Column)
         {
-            return (GetTimeAt(this._oldPoint.X, this._oldPoint.Y, ref Column));
+            return GetTimeAt(_oldPoint.X, _oldPoint.Y, ref Column);
         }
 
         /// <summary>
@@ -1579,8 +1564,8 @@ namespace Calendar
         /// <returns></returns>
         public bool IsMouseOverHeader()
         {
-            Point currPos = this.PointToClient(MousePosition);
-            return (currPos.Y < dayHeadersHeight);
+            Point currPos = PointToClient(MousePosition);
+            return currPos.Y < dayHeadersHeight;
         }
 
         /// <summary>
@@ -1593,7 +1578,7 @@ namespace Calendar
         {
             MouseLocation Result = MouseLocation.Diary;
 
-            Point currPos = this.PointToClient(MousePosition);
+            Point currPos = PointToClient(MousePosition);
 
             if (currPos.X < hourLabelWidth)
                 Result = MouseLocation.Times;
@@ -1617,9 +1602,9 @@ namespace Calendar
                 TeamViewCountEventArgs multiCount = new TeamViewCountEventArgs(1);
                 RaiseMultiCount(multiCount);
 
-                int dayWidth = (this.Width - (scrollBarV.Width + hourLabelWidth + hourLabelIndent)) / multiCount.Count;
+                int dayWidth = (Width - (scrollBarV.Width + hourLabelWidth + hourLabelIndent)) / multiCount.Count;
 
-                int hour = (currPos.Y - this.HeaderHeight + scrollBarV.Value) / halfHourHeight;
+                int hour = (currPos.Y - HeaderHeight + scrollBarV.Value) / halfHourHeight;
                 currPos.X -= hourLabelWidth;
 
                 DateTime date = startDate;
@@ -1644,7 +1629,7 @@ namespace Calendar
                 Date = startDate;
             }
 
-            return (Result);
+            return Result;
         }
 
         /// <summary>
@@ -1655,14 +1640,14 @@ namespace Calendar
         /// <returns>bool, true if the mouse is over the header, otherwise false</returns>
         public bool GetMouseOverHeader(ref int Column, ref DateTime Date)
         {
-            Point currPos = this.PointToClient(MousePosition);
+            Point currPos = PointToClient(MousePosition);
 
             TeamViewCountEventArgs multiCount = new TeamViewCountEventArgs(1);
             RaiseMultiCount(multiCount);
 
-            int dayWidth = (this.Width - (scrollBarV.Width + hourLabelWidth + hourLabelIndent)) / (multiCount.Count == 0 ? 1 : multiCount.Count);
+            int dayWidth = (Width - (scrollBarV.Width + hourLabelWidth + hourLabelIndent)) / (multiCount.Count == 0 ? 1 : multiCount.Count);
 
-            int hour = (currPos.Y - this.HeaderHeight + scrollBarV.Value) / halfHourHeight;
+            int hour = (currPos.Y - HeaderHeight + scrollBarV.Value) / halfHourHeight;
             currPos.X -= hourLabelWidth;
 
             DateTime date = startDate;
@@ -1682,19 +1667,19 @@ namespace Calendar
                     Column--;
             }
 
-            return (currPos.Y < dayHeadersHeight);
+            return currPos.Y < dayHeadersHeight;
         }
 
         public void GetColumnFromMousePosition(out int Column, out DateTime Date)
         {
-            Point currPos = this.PointToClient(MousePosition);
+            Point currPos = PointToClient(MousePosition);
 
             TeamViewCountEventArgs multiCount = new TeamViewCountEventArgs(1);
             RaiseMultiCount(multiCount);
 
-            int dayWidth = (this.Width - (scrollBarV.Width + hourLabelWidth + hourLabelIndent)) / multiCount.Count;
+            int dayWidth = (Width - (scrollBarV.Width + hourLabelWidth + hourLabelIndent)) / multiCount.Count;
 
-            int hour = (currPos.Y - this.HeaderHeight + scrollBarV.Value) / halfHourHeight;
+            int hour = (currPos.Y - HeaderHeight + scrollBarV.Value) / halfHourHeight;
             currPos.X -= hourLabelWidth;
 
             DateTime date = startDate;
@@ -1719,9 +1704,9 @@ namespace Calendar
             TeamViewCountEventArgs multiCount = new TeamViewCountEventArgs(1);
             RaiseMultiCount(multiCount);
 
-            int dayWidth = (this.Width - (scrollBarV.Width + hourLabelWidth + hourLabelIndent)) / (multiCount.Count == 0 ? 1 : multiCount.Count);
+            int dayWidth = (Width - (scrollBarV.Width + hourLabelWidth + hourLabelIndent)) / (multiCount.Count == 0 ? 1 : multiCount.Count);
 
-            int hour = (y - this.HeaderHeight + scrollBarV.Value) / halfHourHeight;
+            int hour = (y - HeaderHeight + scrollBarV.Value) / halfHourHeight;
             x -= hourLabelWidth;
 
             DateTime date = startDate;
@@ -1741,7 +1726,7 @@ namespace Calendar
             }
 
             if ((hour > 0) && (hour < 24 * slotsPerHour))
-                date = date.AddMinutes((hour * (60 / slotsPerHour)));
+                date = date.AddMinutes(hour * (60 / slotsPerHour));
 
             return date;
         }
@@ -1778,16 +1763,16 @@ namespace Calendar
             columnCount = multiCount.Count;
 
             // resolve appointments on visible date range.
-            ResolveAppointmentsEventArgs args = new ResolveAppointmentsEventArgs(this.StartDate, ViewType == DayViewType.SingleView ? this.StartDate.AddDays(multiCount.Count) : this.startDate.AddDays(0));
+            ResolveAppointmentsEventArgs args = new ResolveAppointmentsEventArgs(StartDate, ViewType == DayViewType.SingleView ? StartDate.AddDays(multiCount.Count) : startDate.AddDays(0));
             OnResolveAppointments(args);
 
             using (SolidBrush backBrush = new SolidBrush(renderer.BackColor))
-                e.Graphics.FillRectangle(backBrush, this.ClientRectangle);
+                e.Graphics.FillRectangle(backBrush, ClientRectangle);
 
             e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
             
             // Calculate visible rectangle
-            Rectangle rectangle = new Rectangle(0, 0, this.Width - scrollBarV.Width, this.Height);
+            Rectangle rectangle = new Rectangle(0, 0, Width - scrollBarV.Width, Height);
 
 
             Rectangle daysRectangle = GetVisibleRectangle();
@@ -1799,14 +1784,14 @@ namespace Calendar
 
             Rectangle hourLabelRectangle = rectangle;
 
-            hourLabelRectangle.Y += this.HeaderHeight;
+            hourLabelRectangle.Y += HeaderHeight;
 
             DrawHourLabels(e, hourLabelRectangle);
 
             Rectangle headerRectangle = rectangle;
 
             headerRectangle.X += hourLabelWidth + hourLabelIndent;
-            headerRectangle.Width -= (hourLabelWidth + hourLabelIndent);
+            headerRectangle.Width -= hourLabelWidth + hourLabelIndent;
             headerRectangle.Height = dayHeadersHeight;
 
             if (multiCount.Count > 0 && e.ClipRectangle.IntersectsWith(headerRectangle))
@@ -1814,7 +1799,7 @@ namespace Calendar
 
             Rectangle scrollrect = rectangle;
 
-            if (!this.AllowScroll)
+            if (!AllowScroll)
             {
                 scrollrect.X = headerRectangle.Width + hourLabelWidth + hourLabelIndent;
                 scrollrect.Width = scrollBarV.Width;
@@ -1841,7 +1826,7 @@ namespace Calendar
                 if (highlightCurrentTime && DateTime.Now.Hour == m_Hour)
                 {
                     //hourRectangle.Y = rect.Y + (m_Hour * slotsPerHour * halfHourHeight) - scrollbar.Value;
-                    int minuteLine = (int)Math.Round(((double)(slotsPerHour * halfHourHeight) / 60) * DateTime.Now.Minute, 0, MidpointRounding.ToEven);
+                    int minuteLine = (int)Math.Round((double)(slotsPerHour * halfHourHeight) / 60 * DateTime.Now.Minute, 0, MidpointRounding.ToEven);
 
                     Pen pen = new Pen(Color.Red);
                     e.Graphics.DrawLine(pen, hourRectangle.Left, hourRectangle.Y + minuteLine, hourRectangle.Width, hourRectangle.Y + minuteLine);
@@ -1856,7 +1841,7 @@ namespace Calendar
                     }
                 }
 
-                renderer.DrawHourLabel(e.Graphics, hourRectangle, m_Hour, this.ampmdisplay);
+                renderer.DrawHourLabel(e.Graphics, hourRectangle, m_Hour, ampmdisplay);
 
                 for (int slot = 0; slot < slotsPerHour; slot++)
                 {
@@ -1905,12 +1890,12 @@ namespace Calendar
             int startY;
             int endY;
 
-            startY = (start.Hour * halfHourHeight * slotsPerHour) + ((start.Minute * halfHourHeight) / (60 / slotsPerHour));
-            endY = (end.Hour * halfHourHeight * slotsPerHour) + ((end.Minute * halfHourHeight) / (60 / slotsPerHour));
+            startY = (start.Hour * halfHourHeight * slotsPerHour) + (start.Minute * halfHourHeight / (60 / slotsPerHour));
+            endY = (end.Hour * halfHourHeight * slotsPerHour) + (end.Minute * halfHourHeight / (60 / slotsPerHour));
 
-            rect.Y = startY - scrollBarV.Value + this.HeaderHeight;
+            rect.Y = startY - scrollBarV.Value + HeaderHeight;
 
-            rect.Height = System.Math.Max(1, (endY - startY) -1);
+            rect.Height = System.Math.Max(1, endY - startY -1);
 
             return rect;
         }
@@ -1939,16 +1924,16 @@ namespace Calendar
                 canWork = args.CanWork;
             }
             
-            if (workingHoursRectangle.Y < this.HeaderHeight)
+            if (workingHoursRectangle.Y < HeaderHeight)
             {
-                workingHoursRectangle.Height -= this.HeaderHeight - workingHoursRectangle.Y;
-                workingHoursRectangle.Y = this.HeaderHeight;
+                workingHoursRectangle.Height -= HeaderHeight - workingHoursRectangle.Y;
+                workingHoursRectangle.Y = HeaderHeight;
             }
 
             if (canWork)
                 renderer.DrawHourRange(e.Graphics, workingHoursRectangle, false, false, canWork);
 
-            if ((selection == SelectionType.DateRange))
+            if (selection == SelectionType.DateRange)
             {
                 Rectangle selectionRectangle = selectionRectangle = GetHourRangeRectangle(selectionStart, selectionEnd, rect);
                 bool Selected = false;
@@ -1959,7 +1944,7 @@ namespace Calendar
                 }
                 else
                 {
-                    if ((ViewType == DayViewType.TeamView))
+                    if (ViewType == DayViewType.TeamView)
                     {
                         Selected = Column == selectedColumn;
                     }
@@ -1969,7 +1954,7 @@ namespace Calendar
                     }
                 }
 
-                if (selectionRectangle.Top + 1 > this.HeaderHeight && Selected)
+                if (selectionRectangle.Top + 1 > HeaderHeight && Selected)
                 {
                     renderer.DrawHourRange(e.Graphics, selectionRectangle, false, Selected, canWork);
                 }
@@ -1983,7 +1968,7 @@ namespace Calendar
             {
                 int y = rect.Top + (hour * halfHourHeight) - scrollBarV.Value;
 
-                using (Pen pen = new Pen(((hour % slotsPerHour) == 0 ? color1 : color2)))
+                using (Pen pen = new Pen((hour % slotsPerHour) == 0 ? color1 : color2))
                     e.Graphics.DrawLine(pen, rect.Left, y, rect.Right, y);
 
                 if (y > rect.Bottom)
@@ -2049,7 +2034,7 @@ namespace Calendar
 
             if (appointments != null)
             {
-                AppointmentLayout[] layout = GetMaxParalelAppointments(appointments, this.slotsPerHour);
+                AppointmentLayout[] layout = GetMaxParalelAppointments(appointments, slotsPerHour);
 
                 List<Appointment> drawnItems = new List<Appointment>();
 
@@ -2086,7 +2071,7 @@ namespace Calendar
                                         if (app == null)
                                             break;
 
-                                        if ((app.Group == appointment.Group) && (appointmentViews.ContainsKey(app)))
+                                        if ((app.Group == appointment.Group) && appointmentViews.ContainsKey(app))
                                         {
                                             view = appointmentViews[app];
 
@@ -2107,7 +2092,7 @@ namespace Calendar
                                 // Draw the appts boxes depending on the height display mode                           
 
                                 // If small appts are to be drawn in half-hour blocks
-                                if (this.AppHeightMode == AppHeightDrawMode.FullHalfHourBlocksShort && appointment.EndDate.Subtract(appointment.StartDate).TotalMinutes < (60 / slotsPerHour))
+                                if (AppHeightMode == AppHeightDrawMode.FullHalfHourBlocksShort && appointment.EndDate.Subtract(appointment.StartDate).TotalMinutes < (60 / slotsPerHour))
                                 {
                                     // Round the start/end time to the last/next halfhour
                                     appstart = appointment.StartDate.AddMinutes(-appointment.StartDate.Minute);
@@ -2115,13 +2100,13 @@ namespace Calendar
 
                                     // Make sure we've rounded it to the correct halfhour :)
                                     if (appointment.StartDate.Minute >= (60 / slotsPerHour))
-                                        appstart = appstart.AddMinutes((60 / slotsPerHour));
+                                        appstart = appstart.AddMinutes(60 / slotsPerHour);
                                     if (appointment.EndDate.Minute > (60 / slotsPerHour))
-                                        append = append.AddMinutes((60 / slotsPerHour));
+                                        append = append.AddMinutes(60 / slotsPerHour);
                                 }
 
                                 // This is basically the same as previous mode, but for all appts
-                                else if (this.AppHeightMode == AppHeightDrawMode.FullHalfHourBlocksAll)
+                                else if (AppHeightMode == AppHeightDrawMode.FullHalfHourBlocksAll)
                                 {
                                     appstart = appointment.StartDate.AddMinutes(-appointment.StartDate.Minute);
                                     if (appointment.EndDate.Minute != 0 && appointment.EndDate.Minute != (60 / slotsPerHour))
@@ -2130,23 +2115,23 @@ namespace Calendar
                                         append = appointment.EndDate;
 
                                     if (appointment.StartDate.Minute >= (60 / slotsPerHour))
-                                        appstart = appstart.AddMinutes((60 / slotsPerHour));
+                                        appstart = appstart.AddMinutes(60 / slotsPerHour);
                                     if (appointment.EndDate.Minute > (60 / slotsPerHour))
-                                        append = append.AddMinutes((60 / slotsPerHour));
+                                        append = append.AddMinutes(60 / slotsPerHour);
                                 }
 
                                 // Based on previous code
-                                else if (this.AppHeightMode == AppHeightDrawMode.EndHalfHourBlocksShort && appointment.EndDate.Subtract(appointment.StartDate).TotalMinutes < (60 / slotsPerHour))
+                                else if (AppHeightMode == AppHeightDrawMode.EndHalfHourBlocksShort && appointment.EndDate.Subtract(appointment.StartDate).TotalMinutes < (60 / slotsPerHour))
                                 {
                                     // Round the end time to the next halfhour
                                     append = appointment.EndDate.AddMinutes((60 / slotsPerHour) - appointment.EndDate.Minute);
 
                                     // Make sure we've rounded it to the correct halfhour :)
                                     if (appointment.EndDate.Minute > (60 / slotsPerHour))
-                                        append = append.AddMinutes((60 / slotsPerHour));
+                                        append = append.AddMinutes(60 / slotsPerHour);
                                 }
 
-                                else if (this.AppHeightMode == AppHeightDrawMode.EndHalfHourBlocksAll)
+                                else if (AppHeightMode == AppHeightDrawMode.EndHalfHourBlocksAll)
                                 {
                                     // Round the end time to the next halfhour
                                     if (appointment.EndDate.Minute != 0 && appointment.EndDate.Minute != (60 / slotsPerHour))
@@ -2155,7 +2140,7 @@ namespace Calendar
                                         append = appointment.EndDate;
                                     // Make sure we've rounded it to the correct halfhour :)
                                     if (appointment.EndDate.Minute > (60 / slotsPerHour))
-                                        append = append.AddMinutes((60 / slotsPerHour));
+                                        append = append.AddMinutes(60 / slotsPerHour);
                                 }
 
                                 appRect = GetHourRangeRectangle(appstart, append, appRect);
@@ -2168,7 +2153,7 @@ namespace Calendar
 
                                 e.Graphics.SetClip(rect);
 
-                                if (this.DrawAllAppointmentBorders)
+                                if (DrawAllAppointmentBorders)
                                     appointment.DrawBorder = true;
 
                                 // Procedure for gripper rectangle is always the same
@@ -2190,7 +2175,7 @@ namespace Calendar
         private static AppointmentLayout[] GetMaxParalelAppointments(List<Appointment> appointments, int slotsPerHour)
         {
             int maxAppointments = appointments.Count > MAX_APPOINTMENTS_CONFLICTS ? MAX_APPOINTMENTS_CONFLICTS : appointments.Count;
-            AppointmentLayout[] Result = new AppointmentLayout[24 * (60 / slotsPerHour)];
+            AppointmentLayout[] Result = new AppointmentLayout[24 * slotsPerHour];
 
             foreach (Appointment appointment in appointments)
             {
@@ -2199,8 +2184,8 @@ namespace Calendar
 
             foreach (Appointment appointment in appointments)
             {
-                int startBlock = appointment.StartDate.Hour * slotsPerHour + (appointment.StartDate.Minute / (60 / slotsPerHour));
-                int endBlock = appointment.EndDate.Hour * slotsPerHour + (appointment.EndDate.Minute / (60 / slotsPerHour));
+                int startBlock = (appointment.StartDate.Hour * slotsPerHour) + (appointment.StartDate.Minute / (60 / slotsPerHour));
+                int endBlock = (appointment.EndDate.Hour * slotsPerHour) + (appointment.EndDate.Minute / (60 / slotsPerHour));
 
                 // Added to allow small parts been displayed
                 if (endBlock == startBlock)
@@ -2273,7 +2258,7 @@ namespace Calendar
                 }
             }
 
-            return (Result);
+            return Result;
         }
 
         private void DrawDays(PaintEventArgs e, Rectangle rect)
@@ -2347,7 +2332,7 @@ namespace Calendar
                     if (!layers.Contains(app.Layer))
                         layers.Add(app.Layer);
 
-                allDayEventsHeaderHeight = layers.Count * (horizontalAppointmentHeight + 5) + 5;
+                allDayEventsHeaderHeight = (layers.Count * (horizontalAppointmentHeight + 5)) + 5;
 
                 Rectangle backRectangle = rect;
                 backRectangle.Y = y;
@@ -2373,18 +2358,18 @@ namespace Calendar
                     if (ViewType == DayViewType.SingleView)
                     {
                         appointmenRect.Width = (dayWidth * spanDays) - 5;
-                        appointmenRect.X += (appointment.StartDate.Subtract(startDate).Days) * dayWidth; // changed by Gimlei
+                        appointmenRect.X += appointment.StartDate.Subtract(startDate).Days * dayWidth; // changed by Gimlei
                     }
                     else
                     {
                         appointmenRect.Width = (dayWidth * multiCount.Count) - 5;
-                        appointmenRect.X += (appointment.StartDate.Subtract(startDate).Days) * dayWidth;
+                        appointmenRect.X += appointment.StartDate.Subtract(startDate).Days * dayWidth;
                     }
 
                     if (appointmenRect.X < 0)
                         appointmenRect.X = 53;
 
-                    appointmenRect.Y = y + appointment.Layer * (horizontalAppointmentHeight + 5) + 5; // changed by Gimlei
+                    appointmenRect.Y = y + (appointment.Layer * (horizontalAppointmentHeight + 5)) + 5; // changed by Gimlei
 
                     view = new AppointmentView();
                     view.Rectangle = appointmenRect;
@@ -2437,16 +2422,16 @@ namespace Calendar
                 foreach (Appointment appt in Appointments)
                 {
                     if (appt == appointment)
-                        return (true);
+                        return true;
                 }
 
-                return (false);
+                return false;
             }
 
 #if DEBUG
             public override string ToString()
             {
-                return (String.Format("AppointmentLayout, Count = {0}", Count));
+                return String.Format("AppointmentLayout, Count = {0}", Count);
             }
 #endif
         }
@@ -2535,10 +2520,10 @@ namespace Calendar
             _timerTooltip.Enabled = false;
             _moveStart = false;
 
-            if (!this.RectangleToScreen(this.ClientRectangle).Contains(Cursor.Position))
+            if (!RectangleToScreen(ClientRectangle).Contains(Cursor.Position))
                 return;
 
-            Point currPos = this.PointToClient(MousePosition);
+            Point currPos = PointToClient(MousePosition);
             Appointment appt = GetAppointmentAt(currPos.X, currPos.Y);
             int Column = -1;
             TooltipEventArgs args = null;

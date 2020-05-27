@@ -29,8 +29,9 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmDayViewDemo));
             Calendar.DrawTool drawTool1 = new Calendar.DrawTool();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmDayViewDemo));
+            this.dayView1 = new Calendar.DayView();
             this.contextMenuStripAllDay = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.contextMenuStripDiary = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.createAppointmentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -52,11 +53,48 @@
             this.cbAllowAppointmentMove = new System.Windows.Forms.CheckBox();
             this.cbAllowNew = new System.Windows.Forms.CheckBox();
             this.cbAllowAppointmentResize = new System.Windows.Forms.CheckBox();
-            this.dayView1 = new Calendar.DayView();
             this.contextMenuStripDiary.SuspendLayout();
             this.contextMenuStripHeader.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
+            // 
+            // dayView1
+            // 
+            drawTool1.DayView = this.dayView1;
+            this.dayView1.ActiveTool = drawTool1;
+            this.dayView1.AlwaysShowAppointmentText = true;
+            this.dayView1.AmPmDisplay = false;
+            this.dayView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dayView1.ContextMenuAllDay = this.contextMenuStripAllDay;
+            this.dayView1.ContextMenuDiary = this.contextMenuStripDiary;
+            this.dayView1.ContextMenuHeader = this.contextMenuStripHeader;
+            this.dayView1.DrawAllAppointmentBorders = false;
+            this.dayView1.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.dayView1.Location = new System.Drawing.Point(247, 34);
+            this.dayView1.Name = "dayView1";
+            this.dayView1.RightMouseSelect = true;
+            this.dayView1.SelectedAppointment = null;
+            this.dayView1.SelectionEnd = new System.DateTime(((long)(0)));
+            this.dayView1.SelectionStart = new System.DateTime(((long)(0)));
+            this.dayView1.ShowMinutes = true;
+            this.dayView1.Size = new System.Drawing.Size(716, 492);
+            this.dayView1.StartDate = new System.DateTime(((long)(0)));
+            this.dayView1.TabIndex = 2;
+            this.dayView1.Text = "dayView1";
+            this.dayView1.AppointmentSelected += new Calendar.AppointmentSelectedEventHandler(this.dayView1_AppointmentSelected);
+            this.dayView1.SelectionChanged += new System.EventHandler(this.dayView1_SelectionChanged);
+            this.dayView1.ResolveAppointments += new Calendar.ResolveAppointmentsEventHandler(this.dayView1_ResolveAppointments);
+            this.dayView1.NewAppointment += new Calendar.NewAppointmentEventHandler(this.dayView1_NewAppointment);
+            this.dayView1.AppointmentUpdated += new System.EventHandler<Calendar.AppointmentEventArgs>(this.dayView1_AppointmentUpdated);
+            this.dayView1.BeforeAppointmentMove += new Calendar.BeforeMoveAppointmentEventHandler(this.dayView1_BeforeAppointmentMove);
+            this.dayView1.AppointmentMoved += new System.EventHandler<Calendar.AppointmentEventArgs>(this.dayView1_AppointmentMoved);
+            this.dayView1.MultiCount += new Calendar.MultiCountEventHandler(this.dayView1_MultiCount);
+            this.dayView1.MultiHeader += new Calendar.MultiGetEventHandler(this.dayView1_MultiHeader);
+            this.dayView1.ToolTipShow += new Calendar.TooltipEventHandler(this.dayView1_ToolTipShow);
+            this.dayView1.WorkingHours += new Calendar.WorkingHoursEventHandler(this.dayView1_WorkingHours);
+            this.dayView1.HeaderClicked += new Calendar.HeaderClickEventHandler(this.dayView1_HeaderClicked);
             // 
             // contextMenuStripAllDay
             // 
@@ -252,44 +290,6 @@
             this.cbAllowAppointmentResize.Text = "Allow Appointment Resize";
             this.cbAllowAppointmentResize.UseVisualStyleBackColor = true;
             this.cbAllowAppointmentResize.CheckedChanged += new System.EventHandler(this.cbAllowAppointmentResize_CheckedChanged);
-            // 
-            // dayView1
-            // 
-            drawTool1.DayView = this.dayView1;
-            this.dayView1.ActiveTool = drawTool1;
-            this.dayView1.AlwaysShowAppointmentText = true;
-            this.dayView1.AmPmDisplay = false;
-            this.dayView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dayView1.ContextMenuAllDay = this.contextMenuStripAllDay;
-            this.dayView1.ContextMenuDiary = this.contextMenuStripDiary;
-            this.dayView1.ContextMenuHeader = this.contextMenuStripHeader;
-            this.dayView1.DrawAllAppointmentBorders = false;
-            this.dayView1.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.dayView1.Location = new System.Drawing.Point(247, 34);
-            this.dayView1.Name = "dayView1";
-            this.dayView1.RightMouseSelect = true;
-            this.dayView1.SelectedAppointment = null;
-            this.dayView1.SelectionEnd = new System.DateTime(((long)(0)));
-            this.dayView1.SelectionStart = new System.DateTime(((long)(0)));
-            this.dayView1.ShowMinutes = true;
-            this.dayView1.Size = new System.Drawing.Size(716, 492);
-            this.dayView1.StartDate = new System.DateTime(((long)(0)));
-            this.dayView1.TabIndex = 2;
-            this.dayView1.Text = "dayView1";
-            this.dayView1.AppointmentSelected += new Calendar.AppointmentSelectedEventHandler(this.dayView1_AppointmentSelected);
-            this.dayView1.SelectionChanged += new System.EventHandler(this.dayView1_SelectionChanged);
-            this.dayView1.ResolveAppointments += new Calendar.ResolveAppointmentsEventHandler(this.dayView1_ResolveAppointments);
-            this.dayView1.NewAppointment += new Calendar.NewAppointmentEventHandler(this.dayView1_NewAppointment);
-            this.dayView1.AppointmentUpdated += new System.EventHandler<Calendar.AppointmentEventArgs>(this.dayView1_AppointmentUpdated);
-            this.dayView1.BeforeAppointmentMove += new Calendar.BeforeMoveAppointmentEventHandler(this.dayView1_BeforeAppointmentMove);
-            this.dayView1.AppointmentMoved += new System.EventHandler<Calendar.AppointmentEventArgs>(this.dayView1_AppointmentMoved);
-            this.dayView1.MultiCount += new Calendar.MultiCountEventHandler(this.dayView1_MultiCount);
-            this.dayView1.MultiHeader += new Calendar.MultiGetEventHandler(this.dayView1_MultiHeader);
-            this.dayView1.ToolTipShow += new Calendar.TooltipEventHandler(this.dayView1_ToolTipShow);
-            this.dayView1.WorkingHours += new Calendar.WorkingHoursEventHandler(this.dayView1_WorkingHours);
-            this.dayView1.HeaderClicked += new Calendar.HeaderClickEventHandler(this.dayView1_HeaderClicked);
             // 
             // frmDayViewDemo
             // 

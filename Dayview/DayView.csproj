@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net461;net472;net45;net40</TargetFrameworks>
+    <TargetFrameworks>netcoreapp3;net461;net472;net45;net40</TargetFrameworks>
     <ApplicationIcon />
     <OutputType>Library</OutputType>
     <StartupObject />
@@ -18,10 +18,10 @@
     <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>Dayview2.pfx</AssemblyOriginatorKeyFile>
-    <Copyright>Copyright © 2010 - 2019.  Simon Carter All rights reserved.</Copyright>
+    <Copyright>Copyright © 2010 - 2020.  Simon Carter All rights reserved.</Copyright>
     <PackageId>DayView</PackageId>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>2.9.0</Version>
+    <Version>2.10.0</Version>
     <Authors>Simon Carter</Authors>
     <PackageProjectUrl>https://github.com/k3ldar/SharedLib</PackageProjectUrl>
     <PackageTags>Day and week view calendar</PackageTags>
